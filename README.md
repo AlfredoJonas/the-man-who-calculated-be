@@ -117,7 +117,11 @@ _Below is an example of how you can instruct your audience on installing and set
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+### Running commands on docker (*ex: pytest*)
+  ```sh
+  docker-compose run web pytest
+  ```
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,6 +142,7 @@ Use this space to list resources you find helpful and would like to give credit 
 
 * [Django docs](https://docs.djangoproject.com/en/4.2/)
 * [Docker for django admin](https://github.com/docker/awesome-compose/tree/master/official-documentation-samples)
+* [PyTests on Django](https://pytest-django.readthedocs.io/en/latest/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
