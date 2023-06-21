@@ -95,14 +95,15 @@ _Below is an example of how you can instruct your audience on installing and set
     ```sh
     cd the-man-who-calculated-be
     ```
-3. Make a copy of the *env.example* file renaming it as *.env*
+3. Do a copy of the *env.example* file renaming it as *.env*
    ```sh
    cp .env.example .env
    ```
 4. Now just build the app using docker, in this case we encapsuled all the required steps in a single makefile command, so just type...
    ```sh
-   make appsetup
+   sudo make appsetup
    ```
+   *note: ¿why sudo? just to prevent any users permissions error when copying or creating new files/folders* 
 5. To lift the app use docker as usual running
     ```sh
     docker-compose up
@@ -138,11 +139,12 @@ Jonas Gonzalez - [@Sanoj94](https://twitter.com/Sanoj94) - alfredojonas94@gmail.
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+Resources I find helpful and would like to give credit to.
 
 * [Django docs](https://docs.djangoproject.com/en/4.2/)
 * [Docker for django admin](https://github.com/docker/awesome-compose/tree/master/official-documentation-samples)
 * [PyTests on Django](https://pytest-django.readthedocs.io/en/latest/)
+* [StackOverflow](https://stackoverflow.com/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
