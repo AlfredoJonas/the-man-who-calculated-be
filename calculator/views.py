@@ -3,14 +3,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views import View
 from calculator.models import User, Token
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.utils import timezone
 from datetime import datetime
+from calculator.decorators import token_required
 import json
 
-@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(View):
     def post(self, request):
         body_unicode = request.body.decode('utf-8')
@@ -31,9 +30,13 @@ class LoginView(View):
                 return JsonResponse({'message': 'Login successful', 'token': token.key, 'lifetime': lifetime})
             else:
                 return JsonResponse({'message': 'Invalid credentials'}, status=401)
-        except ObjectDoesNotExist:
+        except ObjectDoesNotExist as e:
             return JsonResponse({'message': 'The user doesn\'t exist'}, status=401)
 
+@method_decorator(token_required, name='dispatch')
 class LogoutView(View):
     def post(self, request):
+        token = Token.objects.get(user=request.user, deleted=False)
+        token.deleted = True
+        token.save()
         return JsonResponse({'message': 'Logout successful'})

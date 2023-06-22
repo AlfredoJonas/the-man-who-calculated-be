@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.hashers import make_password
 from django.utils.timezone import now
 from datetime import timedelta
 
@@ -9,6 +10,10 @@ class User(models.Model):
     password = models.CharField(max_length=128, help_text='Encoded password')
     status = models.CharField(max_length=30, default='active', choices=[('ACTIVE', 'active'), ('INACTIVE', 'inactive')], help_text='Let us know if the user was disabled/deleted or it is active')
     last_login = models.DateTimeField(null=True, help_text='Last time the user do login')
+
+    def save(self, *args, **kwargs):
+        self.password = make_password(self.password)
+        return super().save(*args, **kwargs)
 
     def get_email_field_name(self):
         return self.username
