@@ -3,6 +3,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from django.utils.timezone import now
 from datetime import timedelta
+from calculator import UserStatus, OperationType, USER_STATUSES, OPERATION_TYPES
 
 
 # This is a Django model for a user with email as the username, password encryption, status, and last
@@ -10,7 +11,7 @@ from datetime import timedelta
 class User(models.Model):
     username = models.EmailField(unique=True, help_text='Email to identify the user')
     password = models.CharField(max_length=128, help_text='Encoded password')
-    status = models.CharField(max_length=30, default='active', choices=[('ACTIVE', 'active'), ('INACTIVE', 'inactive')], help_text='Let us know if the user was disabled/deleted or it is active')
+    status = models.CharField(max_length=30, default=UserStatus.ACTIVE.value, choices=USER_STATUSES, help_text='Let us know if the user was disabled/deleted or it is active')
     last_login = models.DateTimeField(null=True, help_text='Last time the user do login')
 
     def save(self, *args, **kwargs):
@@ -49,3 +50,7 @@ class Token(models.Model):
         if not self.expires_at:
             self.expires_at = now() + timedelta(days=1)  # Set token expiration to 1 day from creation
         return super().save(*args, **kwargs)
+    
+class Operation(models.Model):
+    type = models.CharField(max_length=30, default=OperationType.ADDITION.value, choices=OPERATION_TYPES, help_text='Let us know if the user was disabled/deleted or it is active')
+    cost = models.FloatField(default=0)

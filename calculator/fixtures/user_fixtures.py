@@ -15,8 +15,7 @@ def sample_user_success_account(db):
 @pytest.fixture
 @pytest.mark.django_db
 def sample_logged_user_account_token(db, sample_user_success_account):
-    from calculator.models import User, Token
-    user = User.objects.get(username=sample_user_success_account[1].username)
-    token = Token(user=user)
+    from calculator.models import Token
+    token = Token(user=sample_user_success_account[0])
     token.save()
     return token
