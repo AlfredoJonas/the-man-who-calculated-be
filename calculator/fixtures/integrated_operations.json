@@ -1,0 +1,42 @@
+[
+	{
+		"model": "calculator.Operation",
+		"pk": 1,
+		"fields": {
+            "type": "addition",
+			"cost": 0.02
+		}
+	},
+	{
+		"model": "calculator.Operation",
+		"pk": 2,
+		"fields": {
+            "type": "subtraction",
+			"cost": 0.03
+		}
+	},
+	{
+		"model": "calculator.Operation",
+		"pk": 3,
+		"fields": {
+            "type": "division",
+			"cost": 0.04
+		}
+	},
+	{
+		"model": "calculator.Operation",
+		"pk": 4,
+		"fields": {
+            "type": "square_root",
+			"cost": 0.04
+		}
+	},
+	{
+		"model": "calculator.Operation",
+		"pk": 5,
+		"fields": {
+            "type": "random_string",
+			"cost": 0.05
+		}
+	}
+]

@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-FIXTURES := integrated_users
+FIXTURES := integrated_users integrated_operations
 
 appsetup: dockerbuild setupdb
 
