@@ -28,3 +28,5 @@ OPERATION_TYPES = (
     (OperationType.SQUARE_ROOT.value, "Square root"),
     (OperationType.RANDOM_STRING.value, "Random string"),
 )
+
+BASE_USER_BALANCE = 5

@@ -1,14 +1,5 @@
 import pytest
-from django.test import Client
-import json
-
-def post_api(url, payload={}, headers={}):
-    return Client().post(
-        url,
-        json.dumps(payload),
-        'application/json',
-        **headers
-    )
+from calculator.tests import post_api
 
 def reach_login(sample_user_data):
     return post_api('/api/login', sample_user_data)
@@ -17,32 +8,34 @@ def test_simple_success_login(sample_user_success_account):
     response = reach_login(sample_user_success_account[0])
     data = response.json()
     assert response.status_code == 200
-    assert data['message'] == 'Login successful'
+    assert data['developer_message'] == 'Login successful'
 
 @pytest.mark.parametrize(
-    "payload, message",
+    "payload, message, status",
     [
         (
             {
                 "username": "wrong@username.email",
                 "password": "wrong password",
             },
-            'The user doesn\'t exist'
+            'The user doesn\'t exist',
+            404
         ),
         (
             {
                 "username": "admin@admin.com",
                 "password": "wrong password",
             },
-            'Invalid credentials'
+            'Invalid credentials',
+            401
         ),
     ],
 )
-def test_simple_error_login(sample_user_success_account, payload, message):
+def test_simple_error_login(sample_user_success_account, payload, message, status):
     response = reach_login(payload)
     data = response.json()
-    assert response.status_code == 401
-    assert data['message'] == message
+    assert response.status_code == status
+    assert data['developer_message'] == message
 
 
 def test_simple_logout(sample_logged_user_account_token):
@@ -51,4 +44,4 @@ def test_simple_logout(sample_logged_user_account_token):
     }
     response = post_api('/api/logout', headers=headers)
     data = response.json()
-    assert data['message'] == 'Logout successful'
+    assert data['developer_message'] == 'Logout successful'
