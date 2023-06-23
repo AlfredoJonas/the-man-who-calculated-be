@@ -3,6 +3,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from django.utils.timezone import now
 from datetime import timedelta
+from django.contrib.postgres.fields import JSONField
 from calculator import UserStatus, OperationType, USER_STATUSES, OPERATION_TYPES
 
 
@@ -53,4 +54,12 @@ class Token(models.Model):
     
 class Operation(models.Model):
     type = models.CharField(max_length=30, default=OperationType.ADDITION.value, choices=OPERATION_TYPES, help_text='Let us know if the user was disabled/deleted or it is active')
-    cost = models.FloatField(default=0)
+    cost = models.FloatField(default=0, help_text='How much the type of operation cost to the user')
+
+class Record(models.Model):
+    operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = JSONField(default=dict, help_text='Required numbers info to process a certain operation')
+    user_balance = models.FloatField(default=5, help_text='How much left to the user to process new operations')
+    operation_response = models.CharField(max_length=120, default='', help_text='The result of the operation calculated, it could be a number or a random string')
+    created_at = models.DateTimeField(auto_now_add=True, help_text='Date the record was created')
