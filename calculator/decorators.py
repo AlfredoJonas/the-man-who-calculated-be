@@ -1,7 +1,8 @@
 from datetime import datetime
 from wsgiref.simple_server import WSGIRequestHandler
-from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from calculator.exceptions import Unauthorized
 from calculator.models import Token
 from django.utils import timezone
 
@@ -26,6 +27,6 @@ def token_required(view_func):
                     return view_func(request, *args, **kwargs)
                 else:
                     return JsonResponse({'message': 'Expired token, please refresh with /login endpoint'}, status=401)
-        except Exception:
-            return JsonResponse({'error': 'Unauthorized'}, status=401)
+        except (ObjectDoesNotExist, KeyError):
+            raise Unauthorized("Unauthorized")
     return wrapper
