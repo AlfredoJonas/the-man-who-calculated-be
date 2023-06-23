@@ -55,3 +55,13 @@ class Unauthorized(BaseCustomException):
     """
     status_code = 401
     user_message = "The user doesn't have the credentials to access the api"
+
+
+
+class OutOfMoney(BaseCustomException):
+    """
+    The class defines a custom exception for when a user doesn't have enough money in their account to
+    perform an operation.
+    """
+    status_code = 402
+    user_message = "The user doesn't have enough money in their account to perform the operation"
