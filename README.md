@@ -118,11 +118,12 @@ _Below is an example of how you can instruct your audience on installing and set
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
+* ### Check the <a href="https://www.postman.com/alfredojonas/workspace/truenorth-app/collection/3301698-e0ed7dfd-8f4c-4429-a468-cfb4a554adc1?action=share&creator=3301698">postman monitor</a> to test the API
+
 ### Running commands on docker (*ex: pytest*)
   ```sh
   docker-compose run web pytest
   ```
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
