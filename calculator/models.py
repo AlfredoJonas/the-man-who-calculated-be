@@ -63,7 +63,7 @@ class Operation(models.Model):
 class Record(models.Model):
     operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.JSONField(default=dict, help_text='Required numbers info to process a certain operation')
+    amount = models.FloatField(default=0, help_text='How much cost the operation')
     user_balance = models.FloatField(default=5, help_text='How much left to the user to process new operations')
     operation_response = models.CharField(max_length=120, default='', help_text='The result of the operation calculated, it could be a number or a random string')
     created_at = models.DateTimeField(auto_now_add=True, help_text='Date the record was created')
