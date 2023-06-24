@@ -1,6 +1,5 @@
 import pytest
 import random
-
 from calculator import OperationType
 
 
@@ -91,3 +90,26 @@ def build_sample_records(db, sample_logged_user_account_token, sample_operation_
             records[operation.type].append(record)
         return records
     return wrap
+
+@pytest.fixture
+def random_string_mock_response(monkeypatch):
+    random_string =str(random.randint(1000,10000))
+    def fake_post_event(path, **kwargs):
+        return {
+            "jsonrpc": "2.0",
+            "result": {
+                "random": {
+                    "data": [
+                        random_string
+                    ],
+                    "completionTime": "2023-06-24 04:24:26Z"
+                },
+                "bitsUsed": 47,
+                "bitsLeft": 249906,
+                "requestsLeft": 998,
+                "advisoryDelay": 1610
+            },
+            "id": 42
+        }
+
+    monkeypatch.setattr("requests.post", fake_post_event)

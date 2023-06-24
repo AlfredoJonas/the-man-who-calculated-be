@@ -50,7 +50,7 @@ def get_records(token, page: int = 1, size: int = 10, search: str = "", filter: 
 
 
 @pytest.mark.parametrize("operation", operations_json)
-def test_success_operations(sample_logged_user_account_token, build_sample_operation, operation):
+def test_success_operations(sample_logged_user_account_token, build_sample_operation, operation, random_string_mock_response):
     """
     This is a pytest function that tests the success of various operations using parameters from a JSON
     file.

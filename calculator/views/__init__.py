@@ -8,14 +8,16 @@ import json
 from django.utils.decorators import method_decorator
 from calculator.decorators import token_required
 from calculator.model_queries import query_filter_to_paginated_api_view, query_order_to_paginated_api_view, query_search_by_related_conditions
+from calculator.random_string import perform_random_string_operation
 from calculator.utils import check_keys_on_dict
+
 
 operation_functions = {
     OperationType.ADDITION.value: lambda A, B: float(A) + float(B),
     OperationType.SUBSTRACTION.value: lambda A, B: float(A) - float(B),
     OperationType.DIVISION.value: lambda A, B: float(A) / float(B),
     OperationType.SQUARE_ROOT.value: lambda A: math.sqrt(A),
-    OperationType.RANDOM_STRING.value:  lambda: "RANDOM STR"
+    OperationType.RANDOM_STRING.value:  lambda: perform_random_string_operation()
 }
 
 required_fields_by_operation = {
