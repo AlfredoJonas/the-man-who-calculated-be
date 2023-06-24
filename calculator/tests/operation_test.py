@@ -1,6 +1,7 @@
 import pytest
 import json
-from calculator.tests import post_api
+from calculator import OperationType
+from calculator.tests import get_api, post_api
 from calculator.utils import build_dict_with_required_fields, read_json_file
 from calculator.views import operation_functions, required_fields_by_operation
 
@@ -17,7 +18,7 @@ def reach_operation(operation, token, variables={"A": 4, "B": 2}):
     headers = {
         'HTTP_AUTHORIZATION': f'Bearer {token}'
     }
-    return post_api('/api/newoperation', payload, headers), variables
+    return post_api('/api/record', payload, headers), variables
 
 
 @pytest.mark.parametrize("operation", operations_json)
@@ -82,3 +83,48 @@ def test_invalid_addition_operation_payload(sample_logged_user_account_token, sa
     data = response.json()
     assert response.status_code == 400
     assert data['developer_message'] == f"Variables field doesn't have the required fields to proccess the operation {operation.type}"
+
+def test_get_operations(sample_logged_user_account_token, sample_operation_records):
+    payload = {
+        "page": 1,
+        "size": 10,
+        "filter": "",
+        "order": ""
+    }
+    headers = {
+        'HTTP_AUTHORIZATION': f'Bearer {sample_logged_user_account_token.key}'
+    }
+    response =  get_api('/api/operations', payload, headers)
+    data = response.json()
+    assert response.status_code == 200
+    assert len(data['data']) >= 5
+
+
+def test_get_filtered_operations_v1(sample_logged_user_account_token, sample_operation_records):
+    payload = {
+        "page": 1,
+        "size": 10,
+        "filter": f"type:{OperationType.ADDITION.value}",
+    }
+    headers = {
+        'HTTP_AUTHORIZATION': f'Bearer {sample_logged_user_account_token.key}'
+    }
+    response =  get_api('/api/operations', payload, headers)
+    data = response.json()
+    assert response.status_code == 200
+    assert len(data['data']) >= 1
+
+
+def test_get_filtered_operations_v2(sample_logged_user_account_token, sample_operation_records):
+    payload = {
+        "page": 1,
+        "size": 10,
+        "filter": f"cost__gt:0.03",
+    }
+    headers = {
+        'HTTP_AUTHORIZATION': f'Bearer {sample_logged_user_account_token.key}'
+    }
+    response =  get_api('/api/operations', payload, headers)
+    data = response.json()
+    assert response.status_code == 200
+    assert len(data['data']) >= 3

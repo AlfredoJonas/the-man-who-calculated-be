@@ -42,3 +42,20 @@ def sample_addition_record_zero_balance(db, sample_logged_user_account_token, sa
     record = Record(**record_payload)
     record.save()
     return record_payload, record
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def sample_operation_records(db):
+    from calculator.models import Operation
+    from calculator.utils import read_json_file
+    
+    operations_json = read_json_file('fixtures/integrated_operations.json')
+
+    operations = []
+    for operation_dict in operations_json:
+        operation = Operation(**operation_dict['fields'])
+        operation.save()
+        operations.append(operation)
+
+    return operations

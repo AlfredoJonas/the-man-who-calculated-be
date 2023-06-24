@@ -51,7 +51,7 @@ class BaseAuthView(View):
             self.validate_payload(body)
         return self.process_request(request, body)
         
-    def process_request(request, body):
+    def process_request(self, request, body):
        raise NotImplemented
 
 class PaginatedView(BaseAuthView):
@@ -61,6 +61,7 @@ class PaginatedView(BaseAuthView):
         # Get query parameters for filtering and ordering
         filter_param = body.get('filter', '')
         order_param = body.get('order', '')
+        ordering_conditions = []
 
         # Get all objects from the model
         queryset = self.model.objects.all()
@@ -75,12 +76,17 @@ class PaginatedView(BaseAuthView):
         if order_param:
             # Split the ordering into individual ordering conditions
             ordering_conditions = order_param.split(',')
+        elif hasattr(self.model, '-created_at'):
+            # Check if model has created_at field and then use it to order by default to keep consistency data
+            ordering_conditions = ['-created_at']
+        
+        if len(ordering_conditions) > 0:
             queryset = apply_order_to_paginated_api_view(ordering_conditions, queryset)
 
         # Pagination
         page_number = body.get('page', 1)
         size = body.get('size', 10)
-        paginator = Paginator(queryset, str(size))  # Show 10 objects per page
+        paginator = Paginator(queryset, str(size))
         try:
             page_obj = paginator.page(page_number)
             data = list(page_obj.object_list.values())
