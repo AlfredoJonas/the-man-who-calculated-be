@@ -197,4 +197,4 @@ def test_get_filtered_records_v2(sample_logged_user_account_token, build_sample_
     response =  get_records(sample_logged_user_account_token.key, filter=filter)
     data = response.json()
     assert response.status_code == 200
-    assert data['total_pages'] == round(len(records[OperationType.SUBSTRACTION.value])/10)
+    assert data['total_pages'] == math.ceil(len(records[OperationType.SUBSTRACTION.value])/10)

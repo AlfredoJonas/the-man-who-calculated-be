@@ -27,9 +27,13 @@ class NewOperationView(BaseAuthView):
         :param operation_type: The type of operation being performed. It is used to determine which
         fields are required in the "variables" parameter
         """
-        if check_keys_on_dict(required_fields_by_operation[operation_type], variables):
+        required_keys = required_fields_by_operation[operation_type]
+        if check_keys_on_dict(required_keys, variables):
             raise BadRequest(f"Variables field doesn't have the required fields to proccess the operation {operation_type}")
-    
+        elif  len(required_keys) < len(list(variables.keys())):
+            raise BadRequest(f"Variables field has more fields than expected to proccess the operation {operation_type}")
+
+
     @staticmethod
     def get_variables(variables):
         """
@@ -116,11 +120,12 @@ class NewOperationView(BaseAuthView):
         except ObjectDoesNotExist:
             raise NotFound
         
+# This is a paginated view class for the Operation model with allowed filters for type and cost range.
 class GetOperations(PaginatedView):
     allowed_filters = ['type', 'cost__gt', 'cost__lt']
     model = Operation
 
-
+# This is a paginated view class for retrieving user records with allowed filters and search fields.
 class GetUserRecords(PaginatedView):
     allowed_filters = ['user_id', 'operation__type', 'operation__cost', 'operation__cost__lt', 'operation__cost__gt', 'user__username', 'user_balance', 'user_balance__lt', 'user_balance__gt', 'operation_response']
     search_fields = ['operation__type', 'user__username', 'operation__cost', 'user_balance', 'operation_response']

@@ -23,5 +23,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - DJANGO_SETTINGS_MODULE=app.settings
+      - RANDOM_V4_API_URL
+      - RANDOM_API_KEY
     depends_on:
       - db
