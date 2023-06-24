@@ -6,7 +6,7 @@ from calculator import BASE_USER_BALANCE
 from calculator.exceptions import BadRequest, NotFound, OutOfMoney
 from calculator.models import Operation, Record, User
 from calculator.utils import check_keys_on_dict
-from calculator.views import BaseAuthView
+from calculator.views import BaseAuthView, PaginatedView
 from calculator.views import operation_functions, required_fields_by_operation
 
 
@@ -115,3 +115,7 @@ class NewOperationView(BaseAuthView):
                 raise OutOfMoney(f"User balance({user_balance}) is not enough to perform an operation({operation.type}) of {operation.cost}")
         except ObjectDoesNotExist:
             raise NotFound
+        
+class GetOperations(PaginatedView):
+    allowed_filters = ['type', 'cost__gt', 'cost__lt']
+    model = Operation

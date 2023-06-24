@@ -1,11 +1,13 @@
 import math
-import random
 from django.views import View
+from django.http import JsonResponse
+from django.core.paginator import Paginator
 from calculator import OperationType
 from calculator.exceptions import BadRequest
 import json
 from django.utils.decorators import method_decorator
 from calculator.decorators import token_required
+from calculator.model_queries import apply_filter_to_paginated_api_view, apply_order_to_paginated_api_view
 from calculator.utils import check_keys_on_dict
 
 operation_functions = {
@@ -41,6 +43,50 @@ class BaseAuthView(View):
         if len(self.required_fields) > 0:
             self.validate_payload(body)
         return self.process_request(request, body)
+    
+    
+    def get(self, request, **kwargs):
+        body = request.GET.dict()
+        if len(self.required_fields) > 0:
+            self.validate_payload(body)
+        return self.process_request(request, body)
         
     def process_request(request, body):
        raise NotImplemented
+
+class PaginatedView(BaseAuthView):
+    allowed_filters = []
+    model = None
+    def process_request(self, request, body):
+        # Get query parameters for filtering and ordering
+        filter_param = body.get('filter', '')
+        order_param = body.get('order', '')
+
+        # Get all objects from the model
+        queryset = self.model.objects.all()
+
+        # Apply filtering if filter_param is provided
+        if filter_param:
+            # Split the filters into individual filter conditions
+            filter_conditions = filter_param.split(',')
+            queryset = apply_filter_to_paginated_api_view(self.allowed_filters, filter_conditions, queryset)
+
+        # Apply ordering if order_param is provided
+        if order_param:
+            # Split the ordering into individual ordering conditions
+            ordering_conditions = order_param.split(',')
+            queryset = apply_order_to_paginated_api_view(ordering_conditions, queryset)
+
+        # Pagination
+        page_number = body.get('page', 1)
+        size = body.get('size', 10)
+        paginator = Paginator(queryset, str(size))  # Show 10 objects per page
+        try:
+            page_obj = paginator.page(page_number)
+            data = list(page_obj.object_list.values())
+        except Exception:
+            # Handle invalid page number gracefully
+            data = []
+        
+        return JsonResponse({'data': data, **body})
+    
