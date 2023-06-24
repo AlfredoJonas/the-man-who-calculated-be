@@ -119,3 +119,9 @@ class NewOperationView(BaseAuthView):
 class GetOperations(PaginatedView):
     allowed_filters = ['type', 'cost__gt', 'cost__lt']
     model = Operation
+
+
+class GetUserRecords(PaginatedView):
+    allowed_filters = ['user_id', 'operation__type', 'operation__cost', 'operation__cost__lt', 'operation__cost__gt', 'user__username', 'user_balance', 'user_balance__lt', 'user_balance__gt', 'operation_response']
+    search_fields = ['operation__type', 'user__username', 'operation__cost', 'user_balance', 'operation_response']
+    model = Record
