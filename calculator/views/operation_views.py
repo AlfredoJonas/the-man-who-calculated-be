@@ -119,7 +119,7 @@ class NewOperationView(BaseAuthView):
                 raise OutOfMoney(f"User balance({user_balance}) is not enough to perform an operation({operation.type}) of {operation.cost}")
         except ObjectDoesNotExist:
             raise NotFound
-        
+
 # This is a paginated view class for the Operation model with allowed filters for type and cost range.
 class GetOperations(PaginatedView):
     allowed_filters = ['type', 'cost__gt', 'cost__lt']
@@ -130,3 +130,7 @@ class GetUserRecords(PaginatedView):
     allowed_filters = ['user_id', 'operation__type', 'operation__cost', 'operation__cost__lt', 'operation__cost__gt', 'user__username', 'user_balance', 'user_balance__lt', 'user_balance__gt', 'operation_response']
     search_fields = ['operation__type', 'user__username', 'operation__cost', 'user_balance', 'operation_response']
     model = Record
+
+class DeleteRecord(BaseAuthView):
+    model = Record
+    required_fields = ['id']

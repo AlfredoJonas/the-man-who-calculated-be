@@ -17,3 +17,12 @@ def get_api(url: str, payload:dict = {}, headers:dict = {}):
         **headers
     )
     
+
+def delete_api(url: str, payload:dict = {}, headers:dict = {}):
+    return Client().delete(
+        url,
+        payload,
+        content_type='application/json',
+        **headers
+    )
+    

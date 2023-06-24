@@ -67,3 +67,5 @@ class Record(models.Model):
     user_balance = models.FloatField(default=5, help_text='How much left to the user to process new operations')
     operation_response = models.CharField(max_length=120, default='', help_text='The result of the operation calculated, it could be a number or a random string')
     created_at = models.DateTimeField(auto_now_add=True, help_text='Date the record was created')
+    deleted = models.BooleanField(default=False, help_text='For logical deletion')
+    

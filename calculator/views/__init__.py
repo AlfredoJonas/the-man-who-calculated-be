@@ -2,6 +2,7 @@ import math
 from django.views import View
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.forms.models import model_to_dict
 from calculator import OperationType
 from calculator.exceptions import BadRequest
 import json
@@ -33,6 +34,7 @@ required_fields_by_operation = {
 @method_decorator(token_required, name='dispatch')
 class BaseAuthView(View):
     required_fields = []
+    model = None
 
     def validate_payload(self, payload):
         missing_fields = check_keys_on_dict(self.required_fields, payload)
@@ -46,12 +48,20 @@ class BaseAuthView(View):
             self.validate_payload(body)
         return self.process_request(request, body)
     
-    
     def get(self, request, **kwargs):
         body = request.GET.dict()
         if len(self.required_fields) > 0:
             self.validate_payload(body)
         return self.process_request(request, body)
+    
+    def delete(self, request, **kwargs):
+        body = request.GET.dict()
+        if len(self.required_fields) > 0:
+            self.validate_payload(body)
+        record = self.model.objects.get(id=body.get('id'))
+        record.deleted = True
+        record.save()
+        return JsonResponse({'developer_message': f'The {self.model.__class__.__name__} was deleted','data': {'result': model_to_dict(record)}})
         
     def process_request(self, request, body):
        raise NotImplemented

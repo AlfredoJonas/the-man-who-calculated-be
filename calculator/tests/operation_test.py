@@ -2,7 +2,7 @@ import math
 import pytest
 import json
 from calculator import OperationType
-from calculator.tests import get_api, post_api
+from calculator.tests import get_api, post_api, delete_api
 from calculator.utils import build_dict_with_required_fields, read_json_file
 from calculator.views import operation_functions, required_fields_by_operation
 
@@ -198,3 +198,15 @@ def test_get_filtered_records_v2(sample_logged_user_account_token, build_sample_
     data = response.json()
     assert response.status_code == 200
     assert data['total_pages'] == math.ceil(len(records[OperationType.SUBSTRACTION.value])/10)
+
+
+def test_delete_record(sample_logged_user_account_token, build_sample_records):
+    record = build_sample_records(1, 'addition')['addition'][0]
+    headers = {
+        'HTTP_AUTHORIZATION': f'Bearer {sample_logged_user_account_token.key}'
+    }
+    response = delete_api(f'/api/record/delete?id={record.id}', headers=headers)
+    data = response.json()
+    assert response.status_code == 200
+    assert data['data']['result']['id'] == record.id
+    assert data['data']['result']['deleted'] == 1

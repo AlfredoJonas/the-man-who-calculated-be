@@ -1,7 +1,8 @@
+from requests.models import Response
 import pytest
 import random
 from calculator import OperationType
-
+import json
 
 @pytest.fixture
 @pytest.mark.django_db
@@ -67,7 +68,7 @@ def sample_operation_records(db):
 @pytest.fixture
 @pytest.mark.django_db
 def build_sample_records(db, sample_logged_user_account_token, sample_operation_records):
-    def wrap(amount):
+    def wrap(amount, operation_type=None):
         from calculator.models import Record
         records = {
             OperationType.ADDITION.value: [],
@@ -77,7 +78,8 @@ def build_sample_records(db, sample_logged_user_account_token, sample_operation_
             OperationType.RANDOM_STRING.value: [],
         }
         for _ in range(amount):
-            operation = random.choice(sample_operation_records)
+            find_operation = lambda: next(op for op in sample_operation_records if op.type == operation_type)
+            operation = random.choice(sample_operation_records) if not operation_type else find_operation()
             record_payload = {
                 "operation": operation,
                 "user": sample_logged_user_account_token.user,
@@ -95,7 +97,7 @@ def build_sample_records(db, sample_logged_user_account_token, sample_operation_
 def random_string_mock_response(monkeypatch):
     random_string =str(random.randint(1000,10000))
     def fake_post_event(path, **kwargs):
-        return {
+        payload = {
             "jsonrpc": "2.0",
             "result": {
                 "random": {
@@ -111,5 +113,9 @@ def random_string_mock_response(monkeypatch):
             },
             "id": 42
         }
+        response = Response()
+        response.status_code = 200
+        response._content = json.dumps(payload).encode("utf-8")
+        return response
 
     monkeypatch.setattr("requests.post", fake_post_event)
