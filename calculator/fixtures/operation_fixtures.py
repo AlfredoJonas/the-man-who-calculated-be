@@ -1,4 +1,8 @@
 import pytest
+import random
+
+from calculator import OperationType
+
 
 @pytest.fixture
 @pytest.mark.django_db
@@ -59,3 +63,31 @@ def sample_operation_records(db):
         operations.append(operation)
 
     return operations
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def build_sample_records(db, sample_logged_user_account_token, sample_operation_records):
+    def wrap(amount):
+        from calculator.models import Record
+        records = {
+            OperationType.ADDITION.value: [],
+            OperationType.SUBSTRACTION.value: [],
+            OperationType.DIVISION.value: [],
+            OperationType.SQUARE_ROOT.value: [],
+            OperationType.RANDOM_STRING.value: [],
+        }
+        for _ in range(amount):
+            operation = random.choice(sample_operation_records)
+            record_payload = {
+                "operation": operation,
+                "user": sample_logged_user_account_token.user,
+                "amount": operation.cost,
+                "operation_response": str(random.randint(10,1000)),
+                "user_balance": round(random.uniform(0, 5),2)
+            }
+            record = Record(**record_payload)
+            record.save()
+            records[operation.type].append(record)
+        return records
+    return wrap
