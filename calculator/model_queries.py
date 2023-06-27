@@ -11,13 +11,15 @@ def query_filter_to_paginated_api_view(allowed_filters, filter_conditions, query
             queryset = queryset.filter(**{key: value})
     return queryset
 
-def query_order_to_paginated_api_view(ordering_conditions, queryset):
+def query_order_to_paginated_api_view(allowed_order_filters, ordering_conditions, queryset):
     # Apply ordering conditions one by one
+    allowed = lambda x: x in allowed_order_filters
     for condition in ordering_conditions:
         if condition.startswith('-'):
             field = condition[1:]  # Remove the leading '-' for descending order
-            queryset = queryset.order_by('-' + field)
-        else:
+            if allowed(field):
+                queryset = queryset.order_by(f'-{field}')
+        elif allowed(condition):
             queryset = queryset.order_by(condition)
     return queryset
 
