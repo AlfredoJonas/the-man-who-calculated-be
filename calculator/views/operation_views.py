@@ -122,12 +122,12 @@ class NewOperationView(BaseAuthView):
 
 # This is a paginated view class for the Operation model with allowed filters for type and cost range.
 class GetOperations(PaginatedView):
-    allowed_filters = ['type', 'cost__gt', 'cost__lt']
+    allowed_order_filters = ['type', 'cost__gt', 'cost__lt']
     model = Operation
 
 # This is a paginated view class for retrieving user records with allowed filters and search fields.
 class GetUserRecords(PaginatedView):
-    allowed_filters = ['user_id', 'operation__type', 'operation__cost', 'operation__cost__lt', 'operation__cost__gt', 'user__username', 'user_balance', 'user_balance__lt', 'user_balance__gt', 'operation_response']
+    allowed_order_filters = ['id', 'user_id', 'amount', 'amount__lt', 'amount__gt', 'operation__type', 'operation__cost', 'operation__cost__lt', 'operation__cost__gt', 'user__username', 'user_balance', 'user_balance__lt', 'user_balance__gt', 'operation_response', 'created_at']
     search_fields = ['operation__type', 'user__username', 'operation__cost', 'user_balance', 'operation_response']
     model = Record
 

@@ -69,7 +69,7 @@ class BaseAuthView(View):
        raise NotImplemented
 
 class PaginatedView(BaseAuthView):
-    allowed_filters = []
+    allowed_order_filters = []
     search_fields = []
     model = None
     def process_request(self, request, body):
@@ -90,7 +90,7 @@ class PaginatedView(BaseAuthView):
         if filter_param:
             # Split the filters into individual filter conditions
             filter_conditions = filter_param.split(',')
-            queryset = query_filter_to_paginated_api_view(self.allowed_filters, filter_conditions, queryset)
+            queryset = query_filter_to_paginated_api_view(self.allowed_order_filters, filter_conditions, queryset)
 
         # Apply ordering if order_param is provided
         if order_param:
@@ -101,7 +101,7 @@ class PaginatedView(BaseAuthView):
             ordering_conditions = ['-created_at']
         
         if len(ordering_conditions) > 0:
-            queryset = query_order_to_paginated_api_view(ordering_conditions, queryset)
+            queryset = query_order_to_paginated_api_view(self.allowed_order_filters, ordering_conditions, queryset)
 
         # Pagination
         page_number = body.get('page', 1)
