@@ -13,6 +13,7 @@ class User(models.Model):
     password = models.CharField(max_length=128, help_text='Encoded password')
     status = models.CharField(max_length=30, default=UserStatus.ACTIVE.value, choices=USER_STATUSES, help_text='Let us know if the user was disabled/deleted or it is active')
     last_login = models.DateTimeField(null=True, help_text='Last time the user do login')
+    balance = models.FloatField(default=5, help_text='How much left to the user to process new operations')
 
     def save(self, *args, **kwargs):
         """
