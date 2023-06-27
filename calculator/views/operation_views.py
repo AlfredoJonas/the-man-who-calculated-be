@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from calculator import BASE_USER_BALANCE
 from calculator.utils.exceptions import BadRequest, NotFound, OutOfMoney
 from calculator.models import Operation, Record, User
-from calculator.utils.utils import check_keys_on_dict
+from calculator.utils.utils import add_success_response, check_keys_on_dict
 from calculator.views import BaseAuthView, PaginatedView
 from calculator.views import operation_functions, required_fields_by_operation
 
@@ -132,6 +132,11 @@ class GetUserRecords(PaginatedView):
     allowed_order_filters = ['id', 'user_id', 'amount', 'amount__lt', 'amount__gt', 'operation__type', 'operation__cost', 'operation__cost__lt', 'operation__cost__gt', 'user__username', 'user_balance', 'user_balance__lt', 'user_balance__gt', 'operation_response', 'created_at']
     search_fields = ['operation__type', 'user__username', 'operation__cost', 'user_balance', 'operation_response']
     model = Record
+
+    def process_request(self, request, body, *args, **kwargs):
+        response = super().process_request(request, body, *args, **kwargs)
+        return add_success_response(response, 'user_balance', request.user.balance)
+        
 
 class DeleteRecord(BaseAuthView):
     model = Record

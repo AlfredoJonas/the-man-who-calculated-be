@@ -43,3 +43,14 @@ def build_dict_with_required_fields(variables, req_fields):
     """
     variables = {req_field: variables[req_field] for req_field in req_fields if req_field in variables}
     return variables
+
+def add_success_response(response, key, value):
+    # Get the underlying JSON data
+    json_data = json.loads(response.content)
+
+    # Add a new field to the JSON data
+    json_data[key] = value
+
+    # Set the modified JSON data back to the response
+    response.content = json.dumps(json_data)
+    return response

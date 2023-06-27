@@ -16,10 +16,7 @@ def reach_operation(operation, token, variables={"A": 4, "B": 2}):
         "operation_id": operation.id,
         "variables": json.dumps(variables)
     }
-    headers = {
-        'HTTP_AUTHORIZATION': f'Bearer {token}'
-    }
-    return post_api('/api/record', payload, headers), variables
+    return post_api('/api/record', payload, token), variables
 
 
 def get_operation(token, page: int = 1, size: int = 10, filter: str = "", order: str = ""):
@@ -29,10 +26,7 @@ def get_operation(token, page: int = 1, size: int = 10, filter: str = "", order:
         "filter": filter,
         "order": order
     }
-    headers = {
-        'HTTP_AUTHORIZATION': f'Bearer {token}'
-    }
-    return get_api('/api/operations', payload, headers)
+    return get_api('/api/operations', payload, token)
 
 
 def get_records(token, page: int = 1, size: int = 10, search: str = "", filter: str = "", order: str = ""):
@@ -43,10 +37,7 @@ def get_records(token, page: int = 1, size: int = 10, search: str = "", filter: 
         "filter": filter,
         "order": order
     }
-    headers = {
-        'HTTP_AUTHORIZATION': f'Bearer {token}'
-    }
-    return get_api('/api/records', payload, headers)
+    return get_api('/api/records', payload, token)
 
 
 @pytest.mark.parametrize("operation", operations_json)
@@ -229,10 +220,7 @@ def test_get_filtered_records_v4(sample_logged_user_account_token, build_sample_
 
 def test_delete_record(sample_logged_user_account_token, build_sample_records):
     record = build_sample_records(1, 'addition')['addition'][0]
-    headers = {
-        'HTTP_AUTHORIZATION': f'Bearer {sample_logged_user_account_token.key}'
-    }
-    response = delete_api(f'/api/record/delete?id={record.id}', headers=headers)
+    response = delete_api(f'/api/record/delete?id={record.id}', token=sample_logged_user_account_token.key)
     data = response.json()
     assert response.status_code == 200
     assert data['data']['result']['id'] == record.id

@@ -18,15 +18,13 @@ def token_required(view_func):
     """
     def wrapper(request: WSGIRequestHandler, *args: dict, **kwargs: dict):
         try:
-            auth_header = request.META['HTTP_AUTHORIZATION'].split()
-            if len(auth_header) == 2 and auth_header[0].lower() == 'bearer':
-                token = auth_header[1]
-                token_obj = Token.objects.get(key=token, deleted=False)
-                if token_obj.expires_at >= datetime.now(timezone.utc):  # Check expiration date
-                    request.user = token_obj.user
-                    return view_func(request, *args, **kwargs)
-                else:
-                    return JsonResponse({'message': 'Expired token, please refresh with /login endpoint'}, status=401)
+            auth_token = request.COOKIES['auth_token']
+            token_obj = Token.objects.get(key=auth_token, deleted=False)
+            if token_obj.expires_at >= datetime.now(timezone.utc):  # Check expiration date
+                request.user = token_obj.user
+                return view_func(request, *args, **kwargs)
+            else:
+                return JsonResponse({'message': 'Expired token, please refresh with /login endpoint'}, status=401)
         except (ObjectDoesNotExist, KeyError):
             raise Unauthorized("Unauthorized")
     return wrapper

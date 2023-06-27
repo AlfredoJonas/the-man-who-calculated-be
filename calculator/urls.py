@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.user_views import LoginView, LogoutView
+from .views.user_views import LoginView, LogoutView, UserView
 from .views.operation_views import NewOperationView, GetOperations, GetUserRecords, DeleteRecord
 
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
     path('operations', GetOperations.as_view(), name='get_operations'),
     path('records', GetUserRecords.as_view(), name='get_records'),
     path('record/delete', DeleteRecord.as_view(), name='delete_record'),
+    path('user', UserView.as_view(), name='get_user_info'),
 ]
