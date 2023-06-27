@@ -111,7 +111,9 @@ class NewOperationView(BaseAuthView):
                 }
                 record = Record(**record_payload)
                 record.user_balance = new_user_balance
+                request.user.balance = new_user_balance
                 record.save()
+                request.user.save()
                 
                 return JsonResponse({'developer_message': f'The process {operation.type} was successful',
                                         'data': {'result': result}})

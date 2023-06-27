@@ -1,5 +1,6 @@
 from wsgiref.simple_server import WSGIRequestHandler
 from django.contrib.auth.hashers import check_password
+from django.forms.models import model_to_dict
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views import View
@@ -38,7 +39,13 @@ class LoginView(View):
                     token, _ = Token.objects.get_or_create(user=user, deleted=False)
                 user.save()
                 lifetime = (token.expires_at - datetime.now(timezone.utc)).total_seconds()
-                return JsonResponse({'developer_message': 'Login successful', 'token': token.key, 'lifetime': lifetime})
+                return JsonResponse(
+                    {
+                        'developer_message': 'Login successful',
+                        'token': token.key,
+                        'lifetime': lifetime,
+                        'data': {"username": user.username, "balance": user.balance}
+                    })
             else:
                 raise Unauthorized('Invalid credentials')
         except ObjectDoesNotExist as e:
