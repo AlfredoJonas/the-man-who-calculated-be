@@ -5,7 +5,8 @@
 		"fields": {
             "username": "admin@admin.com",
 			"password": "pbkdf2_sha256$260000$BUnNCrfkgJwrfYOWVptTsu$dVNbzftz8yrxJXwcwsuEPqaiifHa1YkaZisNRwiylv8=",
-			"status": "active"
+			"status": "active",
+			"balance": 5
 		}
 	}
 ]
