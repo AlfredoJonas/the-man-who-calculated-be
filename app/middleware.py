@@ -21,5 +21,8 @@ class RequestExceptionHandler:
         else:
             status = 500
             exception_dict = {"developer_message": "Unexpected Error!"}
+        
+        if status != 200:
+            exception_dict['success'] = False
 
         return JsonResponse(exception_dict, status=status)

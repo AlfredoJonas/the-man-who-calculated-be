@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 from calculator.utils.decorators import token_required
 from calculator.model_queries import query_filter_to_paginated_api_view, query_order_to_paginated_api_view, query_search_by_related_conditions
 from calculator.utils.random_string import perform_random_string_operation
-from calculator.utils.utils import check_keys_on_dict
+from calculator.utils.utils import add_success_response, check_keys_on_dict
 
 
 operation_functions = {
@@ -36,7 +36,11 @@ required_fields_by_operation = {
 @method_decorator(token_required, name='dispatch')
 class BaseAuthView(View):
     required_fields = []
-    model = None
+    model = None        
+
+    @staticmethod
+    def add_success(response, key='success', status=True):
+        return add_success_response(response, key, status)
 
     def validate_payload(self, payload: dict):
         missing_fields = check_keys_on_dict(self.required_fields, payload)
@@ -48,14 +52,17 @@ class BaseAuthView(View):
         body = json.loads(body_unicode)
         if len(self.required_fields) > 0:
             self.validate_payload(body)
-        return self.process_request(request, body)
+        response = self.process_request(request, body)
+        return self.add_success(response)
+
     
     def get(self, request: WSGIRequestHandler, **kwargs: Any) -> JsonResponse:
         body = request.GET.dict()
         if len(self.required_fields) > 0:
             self.validate_payload(body)
-        return self.process_request(request, body)
-    
+        response = self.process_request(request, body)
+        return self.add_success(response)
+
     def delete(self, request: WSGIRequestHandler, **kwargs: Any) -> JsonResponse:
         body = request.GET.dict()
         if len(self.required_fields) > 0:
@@ -63,8 +70,9 @@ class BaseAuthView(View):
         record = self.model.objects.get(id=body.get('id'))
         record.deleted = True
         record.save()
-        return JsonResponse({'developer_message': f'The {self.model.__class__.__name__} was deleted','data': {'result': model_to_dict(record)}})
-    
+        response = JsonResponse({'developer_message': f'The {self.model.__class__.__name__} was deleted','data': {'result': model_to_dict(record)}})
+        return self.add_success(response)
+
     def process_request(self, request: WSGIRequestHandler, body: dict):
        raise NotImplemented
 
@@ -81,6 +89,10 @@ class PaginatedView(BaseAuthView):
 
         # Get all objects from the model
         queryset = self.model.objects.all()
+
+        # Check if model has deleted field and then use it to filter deleted data
+        if hasattr(self.model, 'deleted'):
+            queryset = queryset.filter(deleted=0)
 
         # Apply filtering by search fields
         if search and len(self.search_fields) > 0:
