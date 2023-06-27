@@ -1,16 +1,18 @@
 import math
+from typing import Any
 from django.views import View
+from wsgiref.simple_server import WSGIRequestHandler
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.forms.models import model_to_dict
 from calculator import OperationType
-from calculator.exceptions import BadRequest
+from calculator.utils.exceptions import BadRequest
 import json
 from django.utils.decorators import method_decorator
-from calculator.decorators import token_required
+from calculator.utils.decorators import token_required
 from calculator.model_queries import query_filter_to_paginated_api_view, query_order_to_paginated_api_view, query_search_by_related_conditions
-from calculator.random_string import perform_random_string_operation
-from calculator.utils import check_keys_on_dict
+from calculator.utils.random_string import perform_random_string_operation
+from calculator.utils.utils import check_keys_on_dict
 
 
 operation_functions = {
@@ -36,25 +38,25 @@ class BaseAuthView(View):
     required_fields = []
     model = None
 
-    def validate_payload(self, payload):
+    def validate_payload(self, payload: dict):
         missing_fields = check_keys_on_dict(self.required_fields, payload)
         if missing_fields:
             raise BadRequest
     
-    def post(self, request, **kwargs):
+    def post(self, request: WSGIRequestHandler, **kwargs: Any) -> JsonResponse:
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         if len(self.required_fields) > 0:
             self.validate_payload(body)
         return self.process_request(request, body)
     
-    def get(self, request, **kwargs):
+    def get(self, request: WSGIRequestHandler, **kwargs: Any) -> JsonResponse:
         body = request.GET.dict()
         if len(self.required_fields) > 0:
             self.validate_payload(body)
         return self.process_request(request, body)
     
-    def delete(self, request, **kwargs):
+    def delete(self, request: WSGIRequestHandler, **kwargs: Any) -> JsonResponse:
         body = request.GET.dict()
         if len(self.required_fields) > 0:
             self.validate_payload(body)
@@ -62,8 +64,8 @@ class BaseAuthView(View):
         record.deleted = True
         record.save()
         return JsonResponse({'developer_message': f'The {self.model.__class__.__name__} was deleted','data': {'result': model_to_dict(record)}})
-        
-    def process_request(self, request, body):
+    
+    def process_request(self, request: WSGIRequestHandler, body: dict):
        raise NotImplemented
 
 class PaginatedView(BaseAuthView):
@@ -82,7 +84,7 @@ class PaginatedView(BaseAuthView):
 
         # Apply filtering by search fields
         if search and len(self.search_fields) > 0:
-            queryset = query_search_by_related_conditions(self.search_fields, queryset)
+            queryset = query_search_by_related_conditions(queryset, self.search_fields, search)
 
         # Apply filtering if filter_param is provided
         if filter_param:

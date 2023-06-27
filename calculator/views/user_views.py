@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views import View
 from calculator import UserStatus
-from calculator.exceptions import Unauthorized, NotFound
+from calculator.utils.exceptions import Unauthorized, NotFound
 from calculator.models import User, Token
 from django.utils.timezone import now
 from django.utils import timezone

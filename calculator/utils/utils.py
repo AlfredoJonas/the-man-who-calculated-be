@@ -10,7 +10,7 @@ def read_json_file(url):
     :return: The function `read_json_file` returns the data loaded from a JSON file located at the
     specified URL.
     """
-    file_path = os.path.join(os.path.dirname(__file__), url)
+    file_path = os.path.join(url)
     
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)

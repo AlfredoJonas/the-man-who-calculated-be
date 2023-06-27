@@ -3,9 +3,9 @@ from django.http import JsonResponse
 import json
 from django.core.exceptions import ObjectDoesNotExist
 from calculator import BASE_USER_BALANCE
-from calculator.exceptions import BadRequest, NotFound, OutOfMoney
+from calculator.utils.exceptions import BadRequest, NotFound, OutOfMoney
 from calculator.models import Operation, Record, User
-from calculator.utils import check_keys_on_dict
+from calculator.utils.utils import check_keys_on_dict
 from calculator.views import BaseAuthView, PaginatedView
 from calculator.views import operation_functions, required_fields_by_operation
 

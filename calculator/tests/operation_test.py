@@ -3,10 +3,10 @@ import pytest
 import json
 from calculator import OperationType
 from calculator.tests import get_api, post_api, delete_api
-from calculator.utils import build_dict_with_required_fields, read_json_file
+from calculator.utils.utils import build_dict_with_required_fields, read_json_file
 from calculator.views import operation_functions, required_fields_by_operation
 
-operations_json = read_json_file('fixtures/integrated_operations.json')
+operations_json = read_json_file('calculator/fixtures/integrated_operations.json')
 
 
 def reach_operation(operation, token, variables={"A": 4, "B": 2}):
@@ -199,6 +199,33 @@ def test_get_filtered_records_v2(sample_logged_user_account_token, build_sample_
     assert response.status_code == 200
     assert data['total_pages'] == math.ceil(len(records[OperationType.SUBSTRACTION.value])/10)
 
+
+def test_get_filtered_records_v3(sample_logged_user_account_token, build_sample_records):
+    """
+    This function tests the functionality of getting filtered records based on a search query.
+    
+    :param sample_logged_user_account_token: It is a token that represents a logged-in user account.
+    This token is used to authenticate the user and authorize access to certain resources or actions
+    within the system
+    :param build_sample_records: It is a function that builds a sample set of records for testing
+    purposes. The function takes two arguments: the number of records to create and the type of records
+    to create (in this case, 'addition'). It returns a dictionary of records
+    """
+    records = build_sample_records(5, 'addition')['addition']
+    search = "admin"
+    response =  get_records(sample_logged_user_account_token.key, search=search)
+    data = response.json()
+    assert response.status_code == 200
+    assert len(data['data']) == 5 == len(records)
+
+
+def test_get_filtered_records_v4(sample_logged_user_account_token, build_sample_records):
+    build_sample_records(5, 'addition')['addition']
+    search = "random"
+    response =  get_records(sample_logged_user_account_token.key, search=search)
+    data = response.json()
+    assert response.status_code == 200
+    assert len(data['data']) == 0
 
 def test_delete_record(sample_logged_user_account_token, build_sample_records):
     record = build_sample_records(1, 'addition')['addition'][0]

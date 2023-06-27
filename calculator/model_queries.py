@@ -1,4 +1,5 @@
 from django.db.models import Q
+from functools import reduce
 
 def query_filter_to_paginated_api_view(allowed_filters, filter_conditions, queryset):
         # Apply filter conditions one by one
@@ -20,7 +21,7 @@ def query_order_to_paginated_api_view(ordering_conditions, queryset):
             queryset = queryset.order_by(condition)
     return queryset
 
-def query_search_by_related_conditions(conditions, queryset):
-    return queryset.filter(
-                Q(**{condition: se}) for condition in self.search_fields
-            )
+def query_search_by_related_conditions(queryset, conditions, search):
+    queries = [Q(**{f"{condition}__icontains": search}) for condition in conditions]
+    queryset = queryset.filter(reduce(lambda x, y: x | y, queries))
+    return queryset
