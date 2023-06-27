@@ -41,7 +41,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -85,7 +84,7 @@ This is a dockerized project, in terms of build this up you'll need to have alre
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_You can follow this steps in order to have an app build and up._
 
 1. Clone this repo
    ```sh
@@ -101,29 +100,16 @@ _Below is an example of how you can instruct your audience on installing and set
    ```
 4. Now just build the app using docker, in this case we encapsuled all the required steps in a single makefile command, so just type...
    ```sh
-   sudo make appsetup
-   ```
-   *note: ¿why sudo? just to prevent any users permissions error when copying or creating new files/folders* 
-5. To lift the app use docker as usual running
+   make appsetup
+   ``` 
+5. Run tests to confirm everything is OK
+    ```sh
+    docker-compose run web pytest
+    ```
+6. To lift the app use docker as usual running
     ```sh
     docker-compose up
     ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-* ### Check the <a href="https://www.postman.com/alfredojonas/workspace/truenorth-app/collection/3301698-e0ed7dfd-8f4c-4429-a468-cfb4a554adc1?action=share&creator=3301698">postman monitor</a> to test the API
-
-### Running commands on docker (*ex: pytest*)
-  ```sh
-  docker-compose run web pytest
-  ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -156,4 +142,4 @@ Resources I find helpful and would like to give credit to.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [product-screenshot]: images/screenshot.png
 [django]: https://img.shields.io/badge/Django-103e2e?style=for-the-badge&logo=django&logoColor=white
-[django-url]: https://nextjs.org/
+[django-url]: https://www.djangoproject.com/
