@@ -5,16 +5,24 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views import View
 from calculator import UserStatus
-from calculator.utils.exceptions import Unauthorized, NotFound
+from calculator.utils.exceptions import BadRequest, Unauthorized, NotFound
 from calculator.models import User, Token
 from django.utils.timezone import now
 from django.utils import timezone
 from datetime import datetime
 import json
+from calculator.utils.utils import check_keys_on_dict
 from calculator.views import BaseAuthView
 
 # This is a class for handling user login requests and returning a token for authentication.
 class LoginView(View):
+    required_fields = ['username', 'password']
+
+    def validate_payload(self, payload: dict):
+        missing_fields = check_keys_on_dict(self.required_fields, payload)
+        if missing_fields:
+            raise BadRequest
+    
     def post(self, request: WSGIRequestHandler):
         """
         This function handles user login by checking the validity of the provided credentials and
@@ -26,6 +34,7 @@ class LoginView(View):
         """
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
+        self.validate_payload(body)
         username = body['username']
         try:
             user = User.objects.get(username=username, status=UserStatus.ACTIVE.value)
@@ -39,13 +48,14 @@ class LoginView(View):
                     token, _ = Token.objects.get_or_create(user=user, deleted=False)
                 user.save()
                 lifetime = (token.expires_at - datetime.now(timezone.utc)).total_seconds()
-                return JsonResponse(
+                response = JsonResponse(
                     {
                         'developer_message': 'Login successful',
-                        'token': token.key,
                         'lifetime': lifetime,
                         'data': {"username": user.username, "balance": user.balance}
                     })
+                response.set_cookie('auth_token', token.key, httponly=True)
+                return response
             else:
                 raise Unauthorized('Invalid credentials')
         except ObjectDoesNotExist as e:
@@ -67,3 +77,9 @@ class LogoutView(BaseAuthView):
         token.deleted = True
         token.save()
         return JsonResponse({'developer_message': 'Logout successful'})
+
+
+# This is a class-based view in Python that handles user logout by deleting the user's token.
+class UserView(BaseAuthView):
+    def process_request(self, request: WSGIRequestHandler, body, *args, **kwargs):
+        return JsonResponse({'data': {"username": request.user.username, "user_balance": request.user.balance}})

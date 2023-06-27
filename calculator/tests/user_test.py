@@ -1,5 +1,5 @@
 import pytest
-from calculator.tests import post_api
+from calculator.tests import get_api, post_api
 
 def reach_login(sample_user_data):
     return post_api('/api/login', sample_user_data)
@@ -65,9 +65,21 @@ def test_simple_logout(sample_logged_user_account_token):
     This token is used to authenticate the user when making requests to the API. The token is passed in
     the HTTP Authorization header as a Bearer token
     """
-    headers = {
-        'HTTP_AUTHORIZATION': f'Bearer {sample_logged_user_account_token.key}'
-    }
-    response = post_api('/api/logout', headers=headers)
+    response = post_api('/api/logout', token=sample_logged_user_account_token.key)
     data = response.json()
     assert data['developer_message'] == 'Logout successful'
+
+
+def test_simple_get_user_info(sample_logged_user_account_token):
+    """
+    This function tests if a user can successfully log out of their account.
+    
+    :param sample_logged_user_account_token: It is a token that represents a logged-in user account.
+    This token is used to authenticate the user when making requests to the API. The token is passed in
+    the HTTP Authorization header as a Bearer token
+    """
+    response = get_api('/api/user', token=sample_logged_user_account_token.key)
+    user = sample_logged_user_account_token.user
+    data = response.json()
+    assert data['data']['username'] == user.username
+    assert data['data']['user_balance'] == user.balance
