@@ -29,6 +29,4 @@ def token_required(view_func):
                     return JsonResponse({'message': 'Expired token, please refresh with /login endpoint'}, status=401)
         except (ObjectDoesNotExist, KeyError):
             raise Unauthorized("Unauthorized")
-        except Exception as e:
-            print(str(e))
     return wrapper
