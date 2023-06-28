@@ -49,7 +49,10 @@ def sample_addition_record_zero_balance(db, sample_logged_user_account_token, sa
         "user_balance": 0.0
     }
     record = Record(**record_payload)
+    user = sample_logged_user_account_token.user
+    user.balance = 0.0
     record.save()
+    user.save()
     return record_payload, record
 
 

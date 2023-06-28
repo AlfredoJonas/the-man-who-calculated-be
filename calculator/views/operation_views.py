@@ -72,9 +72,8 @@ class NewOperationView(BaseAuthView):
         (either the last recorded balance or the base user balance if there are no records) and the new
         balance after deducting the cost of the operation.
         """
-        last_record = Record.objects.filter(user=user).order_by("-created_at").first()
-        new_user_balance = (last_record.user_balance if last_record else BASE_USER_BALANCE) - operation.cost
-        return last_record.user_balance if last_record else BASE_USER_BALANCE, new_user_balance
+        new_user_balance = user.balance - operation.cost
+        return user.balance, new_user_balance
 
     def process_request(self, request: WSGIRequestHandler, body: json):
         """
