@@ -4,13 +4,13 @@ import json
 from calculator import OperationType
 from calculator.tests import get_api, post_api, delete_api
 from calculator.utils.utils import build_dict_with_required_fields, read_json_file
-from calculator.views import operation_functions, required_fields_by_operation
+from calculator.views import operation_functions
 
 operations_json = read_json_file('calculator/fixtures/integrated_operations.json')
 
 
 def reach_operation(operation, token, variables={"A": 4, "B": 2}):
-    req_fields = required_fields_by_operation[operation.type]
+    req_fields = list(operation.fields.keys())
     variables = dict(build_dict_with_required_fields(variables, req_fields))
     payload = {
         "operation_id": operation.id,

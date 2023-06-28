@@ -11,6 +11,10 @@ def sample_addition_operation(db):
     operation_payload = {
         "type": "addition",
         "cost": 0.2,
+        "fields": {
+            "A": {"value": None, "type": "number", "required": True},
+            "B": {"value": None, "type": "number", "required": True}
+        }
     }
     operation = Operation(**operation_payload)
     operation.save()
@@ -20,11 +24,12 @@ def sample_addition_operation(db):
 @pytest.fixture
 @pytest.mark.django_db
 def build_sample_operation(db):
-    def wrap(type, cost):
+    def wrap(type, cost, fields):
         from calculator.models import Operation
         operation_payload = {
             "type": type,
             "cost": cost,
+            "fields": fields
         }
         operation = Operation(**operation_payload)
         operation.save()

@@ -23,14 +23,6 @@ operation_functions = {
     OperationType.RANDOM_STRING.value:  lambda: perform_random_string_operation()
 }
 
-required_fields_by_operation = {
-    OperationType.ADDITION.value: ['A', 'B'],
-    OperationType.SUBSTRACTION.value: ['A', 'B'],
-    OperationType.DIVISION.value: ['A', 'B'],
-    OperationType.SQUARE_ROOT.value: ['A'],
-    OperationType.RANDOM_STRING.value:  []
-}
-
 # This code is defining a class-based view in Django that requires authentication using a token. 
 # This ensures that the view can only be accessed by authenticated users with a valid token.
 @method_decorator(token_required, name='dispatch')

@@ -7,7 +7,7 @@ from calculator.utils.exceptions import BadRequest, NotFound, OutOfMoney
 from calculator.models import Operation, Record, User
 from calculator.utils.utils import add_success_response, check_keys_on_dict
 from calculator.views import BaseAuthView, PaginatedView
-from calculator.views import operation_functions, required_fields_by_operation
+from calculator.views import operation_functions
 
 
 class NewOperationView(BaseAuthView):
@@ -18,7 +18,7 @@ class NewOperationView(BaseAuthView):
     required_fields = ['operation_id', 'variables']
 
     @staticmethod
-    def check_variable_payload(variables, operation_type):
+    def check_variable_payload(variables, operation):
         """
         The function checks if a dictionary of variables has the required fields for a given operation
         type and raises an exception if not.
@@ -27,11 +27,11 @@ class NewOperationView(BaseAuthView):
         :param operation_type: The type of operation being performed. It is used to determine which
         fields are required in the "variables" parameter
         """
-        required_keys = required_fields_by_operation[operation_type]
+        required_keys = list(operation.fields.keys())
         if check_keys_on_dict(required_keys, variables):
-            raise BadRequest(f"Variables field doesn't have the required fields to proccess the operation {operation_type}")
+            raise BadRequest(f"Variables field doesn't have the required fields to proccess the operation {operation.type}")
         elif  len(required_keys) < len(list(variables.keys())):
-            raise BadRequest(f"Variables field has more fields than expected to proccess the operation {operation_type}")
+            raise BadRequest(f"Variables field has more fields than expected to proccess the operation {operation.type}")
 
 
     @staticmethod
@@ -98,7 +98,7 @@ class NewOperationView(BaseAuthView):
             operation = Operation.objects.get(id=operation_id)
             user_balance, new_user_balance = self.check_balance(request.user, operation)
             if new_user_balance >= 0:
-                self.check_variable_payload(variables, operation.type)
+                self.check_variable_payload(variables, operation)
                 # Perform the operation using the corresponding function
                 operation_function = operation_functions[operation.type]
                 result = operation_function(**variables)
