@@ -27,7 +27,7 @@ class NewOperationView(BaseAuthView):
         :param operation_type: The type of operation being performed. It is used to determine which
         fields are required in the "variables" parameter
         """
-        required_keys = list(operation.fields.keys())
+        required_keys = operation.fields.keys()
         if check_keys_on_dict(required_keys, variables):
             raise BadRequest(f"Variables field doesn't have the required fields to proccess the operation {operation.type}")
         elif  len(required_keys) < len(list(variables.keys())):
@@ -116,7 +116,7 @@ class NewOperationView(BaseAuthView):
                 request.user.save()
                 
                 return JsonResponse({'developer_message': f'The process {operation.type} was successful',
-                                        'data': {'result': result}})
+                                        'data': {'result': result, 'variables': variables}})
             else:
                 raise OutOfMoney(f"User balance({user_balance}) is not enough to perform an operation({operation.type}) of {operation.cost}")
         except ObjectDoesNotExist:
@@ -135,7 +135,7 @@ class GetUserRecords(PaginatedView):
 
     def process_request(self, request, body, *args, **kwargs):
         response = super().process_request(request, body, *args, **kwargs)
-        return add_success_response(response, 'user_balance', request.user.balance)
+        return add_success_response(response, 'user_balance', round(request.user.balance,2))
         
 
 class DeleteRecord(BaseAuthView):

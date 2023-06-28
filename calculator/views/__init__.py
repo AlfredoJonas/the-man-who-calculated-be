@@ -18,8 +18,8 @@ from calculator.utils.utils import add_success_response, check_keys_on_dict
 operation_functions = {
     OperationType.ADDITION.value: lambda A, B: float(A) + float(B),
     OperationType.SUBSTRACTION.value: lambda A, B: float(A) - float(B),
-    OperationType.DIVISION.value: lambda A, B: float(A) / float(B),
-    OperationType.SQUARE_ROOT.value: lambda A: math.sqrt(A),
+    OperationType.DIVISION.value: lambda A, B: round(float(A) / float(B), 4),
+    OperationType.SQUARE_ROOT.value: lambda A: round(math.sqrt(float(A)),4),
     OperationType.RANDOM_STRING.value:  lambda: perform_random_string_operation()
 }
 

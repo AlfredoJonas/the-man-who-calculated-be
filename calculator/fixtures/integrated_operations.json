@@ -4,10 +4,10 @@
 		"pk": 1,
 		"fields": {
             "type": "addition",
-			"cost": 0.02,
+			"cost": 0.2,
 			"fields": {
-				"A": {"value": null, "type": "number", "required": true},
-				"B": {"value": null, "type": "number", "required": true}
+				"A": {"value": "", "type": "number", "required": true},
+				"B": {"value": "", "type": "number", "required": true}
 			}
 		}
 	},
@@ -16,10 +16,10 @@
 		"pk": 2,
 		"fields": {
             "type": "subtraction",
-			"cost": 0.03,
+			"cost": 0.3,
 			"fields": {
-				"A": {"value": null, "type": "number", "required": true},
-				"B": {"value": null, "type": "number", "required": true}
+				"A": {"value": "", "type": "number", "required": true},
+				"B": {"value": "", "type": "number", "required": true}
 			}
 		}
 	},
@@ -28,10 +28,10 @@
 		"pk": 3,
 		"fields": {
             "type": "division",
-			"cost": 0.04,
+			"cost": 0.4,
 			"fields": {
-				"A": {"value": null, "type": "number", "required": true},
-				"B": {"value": null, "type": "number", "required": true}
+				"A": {"value": "", "type": "number", "required": true},
+				"B": {"value": "", "type": "number", "required": true}
 			}
 		}
 	},
@@ -40,9 +40,9 @@
 		"pk": 4,
 		"fields": {
             "type": "square_root",
-			"cost": 0.04,
+			"cost": 0.5,
 			"fields": {
-				"A": {"value": null, "type": "number", "required": true}
+				"A": {"value": "", "type": "number", "required": true}
 			}
 		}
 	},
@@ -51,7 +51,7 @@
 		"pk": 5,
 		"fields": {
             "type": "random_string",
-			"cost": 0.05,
+			"cost": 0.6,
 			"fields": {}
 		}
 	}

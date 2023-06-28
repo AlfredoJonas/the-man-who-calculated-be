@@ -25,6 +25,7 @@ class User(models.Model):
         is_new_record = not bool(self.pk) 
         if is_new_record:
             self.password = make_password(self.password)
+        self.balance = round(self.balance, 2)  # Round the number
         return super().save(*args, **kwargs)
 
     def get_email_field_name(self):
@@ -65,3 +66,6 @@ class Record(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, help_text='Date the record was created')
     deleted = models.BooleanField(default=False, help_text='For logical deletion')
     
+    def save(self, *args, **kwargs):
+        self.user_balance = round(self.user_balance, 2)  # Round the number
+        super().save(*args, **kwargs)

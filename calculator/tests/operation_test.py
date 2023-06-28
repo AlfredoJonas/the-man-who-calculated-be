@@ -149,7 +149,7 @@ def test_get_filtered_operations_v2(sample_logged_user_account_token, sample_ope
     :param sample_operation_records: It is a fixture that provides a list of sample operation records
     for testing purposes
     """
-    filter = f"cost__gt:0.03"
+    filter = f"cost__gt:0.3"
     response =  get_operation(sample_logged_user_account_token.key, filter=filter)
     data = response.json()
     assert response.status_code == 200

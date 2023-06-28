@@ -82,4 +82,4 @@ class LogoutView(BaseAuthView):
 # This is a class-based view in Python that handles user logout by deleting the user's token.
 class UserView(BaseAuthView):
     def process_request(self, request: WSGIRequestHandler, body, *args, **kwargs):
-        return JsonResponse({'data': {"username": request.user.username, "user_balance": request.user.balance}})
+        return JsonResponse({'data': {"username": request.user.username, "user_balance": round(request.user.balance,2)}})
