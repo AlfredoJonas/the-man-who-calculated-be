@@ -8,9 +8,11 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_DB
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+      - RDS_HOSTNAME
+      - RDS_DB_NAME
+      - RDS_PASSWORD
+      - RDS_HOST
+      - RDS_PORT
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -19,10 +21,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_HOST
-      - DJANGO_SETTINGS_MODULE=app.settings
-      - RANDOM_V4_API_URL
-      - RANDOM_API_KEY
+      - RDS_HOSTNAME
+      - RDS_DB_NAME
+      - RDS_PASSWORD
+      - RDS_HOST
+      - RDS_PORT
