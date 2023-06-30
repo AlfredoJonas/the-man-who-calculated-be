@@ -8,10 +8,10 @@ services:
     env_file:
       - .env
     environment:
-      - RDS_HOSTNAME
+      - RDS_USERNAME
       - RDS_DB_NAME
       - RDS_PASSWORD
-      - RDS_HOST
+      - RDS_HOSTNAME
       - RDS_PORT
   web:
     build: .
@@ -21,8 +21,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - RDS_HOSTNAME
+      - RDS_USERNAME
       - RDS_DB_NAME
       - RDS_PASSWORD
-      - RDS_HOST
+      - RDS_HOSTNAME
       - RDS_PORT
