@@ -4,8 +4,6 @@ FIXTURES := integrated_users integrated_operations
 
 appsetup: dockerbuild setupdb serveApp
 
-awssetup: dockerbuild migrate loadfixtures serveApp
-
 makemigrations: python manage.py makemigrations
 
 dockerbuild:
