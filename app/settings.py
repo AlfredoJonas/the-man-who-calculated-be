@@ -26,7 +26,7 @@ SECRET_KEY = '<eSjT<|*#]g_ny7o!o;(a6M$hc<{BsD~(i8>iTcEe]FGGG@<b)4&#Rxp^:.=,Sw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'testserver', 'http://the-man-who-calculated-be-dev.us-east-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['localhost', 'testserver', 'the-man-who-calculated-be-dev.us-east-1.elasticbeanstalk.com']
 
 
 # Application definition
@@ -58,7 +58,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     "http://localhost:8000",
     "http://127.0.0.1:3000",
-    "http://the-man-who-calculated-be-dev.us-east-1.elasticbeanstalk.com"
+    "http://the-man-who-calculated-be-dev.us-east-1.elasticbeanstalk.com/"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
