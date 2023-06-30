@@ -8,5 +8,15 @@
 			"status": "active",
 			"balance": 5
 		}
+	},
+	{
+		"model": "calculator.User",
+		"pk": 2,
+		"fields": {
+            "username": "manager@truenorth.com",
+			"password": "pbkdf2_sha256$260000$BUnNCrfkgJwrfYOWVptTsu$dVNbzftz8yrxJXwcwsuEPqaiifHa1YkaZisNRwiylv8=",
+			"status": "active",
+			"balance": 10
+		}
 	}
 ]
