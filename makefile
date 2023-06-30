@@ -2,9 +2,15 @@ SHELL := /bin/bash
 
 FIXTURES := integrated_users integrated_operations
 
-appsetup: dockerbuild setupdb serveApp
+appsetup: dockerbuild setupdb
 
 makemigrations: python manage.py makemigrations
+
+migrate:
+	python manage.py migrate
+
+loadfixtures:
+	python manage.py loaddata $(FIXTURES)
 
 dockerbuild:
 	docker system prune -f
@@ -13,14 +19,4 @@ dockerbuild:
 setupdb:
 	docker-compose down -v
 	docker-compose up -d db
-	make migrate loadfixtures
-
-migrate:
-	docker-compose run web python manage.py migrate
-
-loadfixtures:
-	docker-compose run web python manage.py loaddata $(FIXTURES)
-
-serveApp:
-	docker-compose up -d web
-
+	docker-compose run web make migrate loadfixtures

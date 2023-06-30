@@ -52,13 +52,15 @@ class LoginView(View):
                     {
                         'developer_message': 'Login successful',
                         'lifetime': lifetime,
+                        'token': token.key,
                         'data': {"username": user.username, "balance": user.balance}
                     })
                 
-                # Set the cookie with SameSite=None and Secure attributes
-                response.set_cookie('auth_token', token.key, httponly=True)
-                response.set_cookie('Access-Control-Allow-Credentials', True, httponly=True)
-                response.set_cookie('Access-Control-Allow-Origin', "*", httponly=True)
+                # TODO Set the cookie with SameSite=None and Secure attributes 
+                # this will help to prevent CSRF attacks and have a more secure
+                # authentication process. Sadly we cann't use it on domains with 
+                # a non secure ssl certificate
+                # response.set_cookie('auth_token', token.key, httponly=True)
 
                 return response
             else:

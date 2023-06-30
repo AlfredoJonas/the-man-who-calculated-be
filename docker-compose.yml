@@ -3,17 +3,18 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     env_file:
       - .env
     environment:
-      - RDS_USERNAME
       - RDS_DB_NAME
+      - RDS_USERNAME
       - RDS_PASSWORD
       - RDS_HOSTNAME
       - RDS_PORT
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   web:
     build: .
@@ -23,13 +24,14 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - RDS_USERNAME
       - RDS_DB_NAME
+      - RDS_USERNAME
       - RDS_PASSWORD
-      - RDS_HOSTNAME
-      - RDS_PORT
       - DJANGO_SETTINGS_MODULE=app.settings
       - RANDOM_V4_API_URL
       - RANDOM_API_KEY
     depends_on:
       - db
+
+volumes:
+  db_data:
