@@ -54,10 +54,12 @@ class LoginView(View):
                         'lifetime': lifetime,
                         'data': {"username": user.username, "balance": user.balance}
                     })
-                response.set_cookie('auth_token', token.key, httponly=True)
+                
+                # Set the cookie with SameSite=None and Secure attributes
+                response.set_cookie('auth_token', token.key, samesite='None', secure=True, httponly=True)
                 response.set_cookie('Access-Control-Allow-Credentials', True, httponly=True)
                 response.set_cookie('Access-Control-Allow-Origin', "*", httponly=True)
-            
+                
                 return response
             else:
                 raise Unauthorized('Invalid credentials')
