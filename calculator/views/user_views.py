@@ -55,6 +55,9 @@ class LoginView(View):
                         'data': {"username": user.username, "balance": user.balance}
                     })
                 response.set_cookie('auth_token', token.key, httponly=True)
+                response.set_cookie('Access-Control-Allow-Credentials', True, httponly=True)
+                response.set_cookie('Access-Control-Allow-Origin', "http://localhost:3000", httponly=True)
+            
                 return response
             else:
                 raise Unauthorized('Invalid credentials')
