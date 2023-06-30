@@ -58,7 +58,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     "http://localhost:8000",
     "http://127.0.0.1:3000",
-    "http://the-man-who-calculated-be-dev.us-east-1.elasticbeanstalk.com/"
+    "http://the-man-who-calculated-be-dev.us-east-1.elasticbeanstalk.com"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
