@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://truenorthinc.com/wp-content/themes/truenorth2019/images/nav-logo-black.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Arithmetic Calculator REST API</h3>
@@ -11,10 +11,8 @@
   <p align="center">
     calculator service for processing basic math operations from server using token authentication!
     <br />
-    <a href="https://github.com/AlfredoJonas/the-man-who-calculated-be/blob/main/README.md"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://www.postman.com/alfredojonas/workspace/truenorth-app/overview">Postman Collection</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
@@ -50,8 +48,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 Service platform to provide a simple calculator functionality (addition, subtraction,
 multiplication, division, square root, and a random string generation) where each functionality will
