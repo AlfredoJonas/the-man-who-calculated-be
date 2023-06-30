@@ -69,10 +69,13 @@ CORS_ALLOWED_METHODS = [
     'DELETE'
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
+    'http_authorization',
     'content-type',
     'dnt',
     'origin',
