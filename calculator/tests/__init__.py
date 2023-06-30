@@ -3,8 +3,7 @@ import json
 
 def post_api(url: str, payload:dict = {}, token = '', headers:dict = {}):
     client = Client()
-    client.cookies['auth_token'] = token
-    client.cookies['auth_token']['httponly'] = True
+    headers['HTTP_AUTHORIZATION'] = f'Bearer {token}'
     return client.post(
         url,
         json.dumps(payload),
@@ -14,8 +13,7 @@ def post_api(url: str, payload:dict = {}, token = '', headers:dict = {}):
 
 def get_api(url: str, payload:dict = {}, token = '', headers:dict = {}):
     client = Client()
-    client.cookies['auth_token'] = token
-    client.cookies['auth_token']['httponly'] = True
+    headers['HTTP_AUTHORIZATION'] = f'Bearer {token}'
     return client.get(
         url,
         payload,
@@ -26,8 +24,7 @@ def get_api(url: str, payload:dict = {}, token = '', headers:dict = {}):
 
 def delete_api(url: str, payload:dict = {}, token = '', headers:dict = {}):
     client = Client()
-    client.cookies['auth_token'] = token
-    client.cookies['auth_token']['httponly'] = True
+    headers['HTTP_AUTHORIZATION'] = f'Bearer {token}'
     return client.delete(
         url,
         payload,

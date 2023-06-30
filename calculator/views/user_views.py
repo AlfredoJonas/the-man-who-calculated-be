@@ -56,7 +56,7 @@ class LoginView(View):
                         'data': {"username": user.username, "balance": user.balance}
                     })
                 
-                # TODO Set the cookie with SameSite=None and Secure attributes 
+                # TODO Set the token cookie with SameSite=None and Secure attributes 
                 # this will help to prevent CSRF attacks and have a more secure
                 # authentication process. Sadly we cann't use it on domains with 
                 # a non secure ssl certificate

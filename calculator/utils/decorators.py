@@ -18,7 +18,8 @@ def token_required(view_func):
     """
     def wrapper(request: WSGIRequestHandler, *args: dict, **kwargs: dict):
         try:
-            auth_token = request.COOKIES['auth_token']
+            # TODO Use token cookie instead of HTTP_AUTHORIZATION
+            auth_token = request.META['HTTP_AUTHORIZATION'].split()[1]
             token_obj = Token.objects.get(key=auth_token, deleted=False)
             if token_obj.expires_at >= datetime.now(timezone.utc):  # Check expiration date
                 request.user = token_obj.user
