@@ -56,9 +56,9 @@ class LoginView(View):
                     })
                 
                 # Set the cookie with SameSite=None and Secure attributes
-                response.set_cookie('auth_token', token.key, samesite='None', secure=False, httponly=True)
-                response.set_cookie('Access-Control-Allow-Credentials', True, samesite='None', secure=False, httponly=True)
-                response.set_cookie('Access-Control-Allow-Origin', "*", samesite='None', secure=False, httponly=True)
+                response.set_cookie('auth_token', token.key, httponly=True)
+                response.set_cookie('Access-Control-Allow-Credentials', True, httponly=True)
+                response.set_cookie('Access-Control-Allow-Origin', "*", httponly=True)
 
                 return response
             else:
