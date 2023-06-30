@@ -132,6 +132,10 @@ class GetUserRecords(PaginatedView):
     search_fields = ['operation__type', 'user__username', 'operation__cost', 'user_balance', 'operation_response']
     model = Record
 
+    def base_query(self, request, *args, **kwargs):
+        queryset = super().base_query(request, *args, **kwargs)
+        return queryset.filter(user=request.user)
+
     def process_request(self, request, body, *args, **kwargs):
         response = super().process_request(request, body, *args, **kwargs)
         return add_success_response(response, 'user_balance', round(request.user.balance,2))

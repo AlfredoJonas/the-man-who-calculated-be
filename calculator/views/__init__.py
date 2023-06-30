@@ -72,6 +72,11 @@ class PaginatedView(BaseAuthView):
     allowed_order_filters = []
     search_fields = []
     model = None
+    
+    def base_query(self, request):
+        # Get all objects from the model
+        return self.model.objects.all()
+
     def process_request(self, request, body):
         # Get query parameters for filtering and ordering
         filter_param = body.get('filter', '')
@@ -79,8 +84,7 @@ class PaginatedView(BaseAuthView):
         search = body.get('search', '')
         ordering_conditions = []
 
-        # Get all objects from the model
-        queryset = self.model.objects.all()
+        queryset = self.base_query(request)
 
         # Check if model has deleted field and then use it to filter deleted data
         if hasattr(self.model, 'deleted'):
