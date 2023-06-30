@@ -1,3 +1,4 @@
+version: '3'
 services:
   db:
     image: postgres
@@ -13,6 +14,7 @@ services:
       - RDS_PASSWORD
       - RDS_HOSTNAME
       - RDS_PORT
+
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -26,3 +28,8 @@ services:
       - RDS_PASSWORD
       - RDS_HOSTNAME
       - RDS_PORT
+      - DJANGO_SETTINGS_MODULE=app.settings
+      - RANDOM_V4_API_URL
+      - RANDOM_API_KEY
+    depends_on:
+      - db
