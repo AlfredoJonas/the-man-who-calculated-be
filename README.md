@@ -49,6 +49,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+### System, model and api Design
+
+![System design][system-design]
+
+![Api design][api-design]
+
 Service platform to provide a simple calculator functionality (addition, subtraction,
 multiplication, division, square root, and a random string generation) where each functionality will
 have a separate cost per request.
@@ -136,6 +142,7 @@ Resources I find helpful and would like to give credit to.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[product-screenshot]: images/screenshot.png
 [django]: https://img.shields.io/badge/Django-103e2e?style=for-the-badge&logo=django&logoColor=white
 [django-url]: https://www.djangoproject.com/
+[system-design]: DataModelAndSystemChart.png
+[api-design]: apiDesign.png
