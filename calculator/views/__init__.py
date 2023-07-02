@@ -125,3 +125,8 @@ class PaginatedView(BaseAuthView):
         pagination_data = {"total_pages": paginator.num_pages, "page": 1, "size": 10, **body}
         return JsonResponse({'data': data, **pagination_data})
     
+
+class ApiStatusView(View):
+    def get(self, request: WSGIRequestHandler, **kwargs: Any) -> JsonResponse:
+        data = {'status': 'OK'}
+        return JsonResponse(data)
