@@ -1,5 +1,4 @@
 class BaseCustomException(Exception):
-
     status_code = None
     developer_message = None
     user_message = "Some error occurred. Please try again later."
@@ -30,20 +29,22 @@ class BaseCustomException(Exception):
         }
 
 
-
 class NotFound(BaseCustomException):
     """
     Should be thrown whenever there is a bad API call that doesn't fit a more
     specific error message.
     """
+
     status_code = 404
     user_message = "The record that you are searching for do not exist"
+
 
 class BadRequest(BaseCustomException):
     """
     Should be thrown whenever an object was not found
     specific error message.
     """
+
     status_code = 400
     user_message = "Invalid payload, please check the API doc and try again"
 
@@ -53,9 +54,9 @@ class Unauthorized(BaseCustomException):
     The class represents an exception for unauthorized access with a status code of 401 and a user
     message.
     """
+
     status_code = 401
     user_message = "The user doesn't have the credentials to access the api"
-
 
 
 class OutOfMoney(BaseCustomException):
@@ -63,5 +64,8 @@ class OutOfMoney(BaseCustomException):
     The class defines a custom exception for when a user doesn't have enough money in their account to
     perform an operation.
     """
+
     status_code = 402
-    user_message = "The user doesn't have enough money in their account to perform the operation"
+    user_message = (
+        "The user doesn't have enough money in their account to perform the operation"
+    )

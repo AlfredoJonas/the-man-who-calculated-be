@@ -5,22 +5,64 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('calculator', '0003_operation'),
+        ("calculator", "0003_operation"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Record',
+            name="Record",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.FloatField(default=0, help_text='How much cost the operation')),
-                ('user_balance', models.FloatField(default=5, help_text='How much left to the user to process new operations')),
-                ('operation_response', models.CharField(default='', help_text='The result of the operation calculated, it could be a number or a random string', max_length=120)),
-                ('created_at', models.DateTimeField(auto_now_add=True, help_text='Date the record was created')),
-                ('operation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='calculator.operation')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='calculator.user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "amount",
+                    models.FloatField(
+                        default=0, help_text="How much cost the operation"
+                    ),
+                ),
+                (
+                    "user_balance",
+                    models.FloatField(
+                        default=5,
+                        help_text="How much left to the user to process new operations",
+                    ),
+                ),
+                (
+                    "operation_response",
+                    models.CharField(
+                        default="",
+                        help_text="The result of the operation calculated, it could be a number or a random string",
+                        max_length=120,
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, help_text="Date the record was created"
+                    ),
+                ),
+                (
+                    "operation",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="calculator.operation",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="calculator.user",
+                    ),
+                ),
             ],
         ),
     ]

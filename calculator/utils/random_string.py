@@ -17,17 +17,15 @@ def perform_random_string_operation():
             "n": 1,
             "length": 10,
             "characters": "abcdefghijklmnopqrstuvwxyz",
-            "replacement": True
+            "replacement": True,
         },
-        "id": 42
+        "id": 42,
     }
     headers = {
         "Content-Type": "application/json",
     }
     response = requests.post(
-                    os.environ.get("RANDOM_V4_API_URL"),
-                    json=random_str_payload,
-                    headers=headers
-                )
+        os.environ.get("RANDOM_V4_API_URL"), json=random_str_payload, headers=headers
+    )
     data = response.json()
-    return data.get('result', {}).get('random', {}).get('data', [''])[0]
+    return data.get("result", {}).get("random", {}).get("data", [""])[0]

@@ -4,18 +4,45 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('calculator', '0002_token'),
+        ("calculator", "0002_token"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Operation',
+            name="Operation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('addition', 'Addition'), ('subtraction', 'Subtraction'), ('division', 'Division'), ('square_root', 'Square root'), ('random_string', 'Random string')], default='addition', help_text='Let us know if the user was disabled/deleted or it is active', max_length=30)),
-                ('cost', models.FloatField(default=0, help_text='How much the type of operation cost to the user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("addition", "Addition"),
+                            ("subtraction", "Subtraction"),
+                            ("division", "Division"),
+                            ("square_root", "Square root"),
+                            ("random_string", "Random string"),
+                        ],
+                        default="addition",
+                        help_text="Let us know if the user was disabled/deleted or it is active",
+                        max_length=30,
+                    ),
+                ),
+                (
+                    "cost",
+                    models.FloatField(
+                        default=0,
+                        help_text="How much the type of operation cost to the user",
+                    ),
+                ),
             ],
         ),
     ]

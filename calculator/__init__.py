@@ -1,5 +1,6 @@
 import enum
 
+
 @enum.unique
 class UserStatus(enum.Enum):
     ACTIVE = "active"

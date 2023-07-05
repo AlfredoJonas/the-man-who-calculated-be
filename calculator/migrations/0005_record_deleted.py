@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('calculator', '0004_record'),
+        ("calculator", "0004_record"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='record',
-            name='deleted',
-            field=models.BooleanField(default=False, help_text='For logical deletion'),
+            model_name="record",
+            name="deleted",
+            field=models.BooleanField(default=False, help_text="For logical deletion"),
         ),
     ]

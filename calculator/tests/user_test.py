@@ -1,14 +1,16 @@
 import pytest
 from calculator.tests import get_api, post_api
 
-def reach_login(sample_user_data):
-    return post_api('/api/login', sample_user_data)
 
-def test_simple_success_login(sample_user_success_account): 
+def reach_login(sample_user_data):
+    return post_api("/api/login", sample_user_data)
+
+
+def test_simple_success_login(sample_user_success_account):
     """
     This function tests a simple successful login by sending a request to the login endpoint and
     checking if the response status code is 200 and the developer message is "Login successful".
-    
+
     :param sample_user_success_account: It is a fixture that returns a sample user
     account that has valid login credentials. The fixture return a tuple or a list
     containing the username and password of the sample user account
@@ -16,7 +18,8 @@ def test_simple_success_login(sample_user_success_account):
     response = reach_login(sample_user_success_account[0])
     data = response.json()
     assert response.status_code == 200
-    assert data['developer_message'] == 'Login successful'
+    assert data["developer_message"] == "Login successful"
+
 
 @pytest.mark.parametrize(
     "payload, message, status",
@@ -26,16 +29,16 @@ def test_simple_success_login(sample_user_success_account):
                 "username": "wrong@username.email",
                 "password": "wrong password",
             },
-            'The user doesn\'t exist',
-            404
+            "The user doesn't exist",
+            404,
         ),
         (
             {
                 "username": "admin@admin.com",
                 "password": "wrong password",
             },
-            'Invalid credentials',
-            401
+            "Invalid credentials",
+            401,
         ),
     ],
 )
@@ -43,7 +46,7 @@ def test_simple_error_login(sample_user_success_account, payload, message, statu
     """
     This is a pytest function that tests for error messages and status codes when attempting to log in
     with incorrect credentials.
-    
+
     :param sample_user_success_account: It is a fixture that sets up a sample user account with
     valid credentials for testing purposes
     :param payload: A dictionary containing the username and password for the login attempt
@@ -54,32 +57,32 @@ def test_simple_error_login(sample_user_success_account, payload, message, statu
     response = reach_login(payload)
     data = response.json()
     assert response.status_code == status
-    assert data['developer_message'] == message
+    assert data["developer_message"] == message
 
 
 def test_simple_logout(sample_logged_user_account_token):
     """
     This function tests if a user can successfully log out of their account.
-    
+
     :param sample_logged_user_account_token: It is a token that represents a logged-in user account.
     This token is used to authenticate the user when making requests to the API. The token is passed in
     the HTTP Authorization header as a Bearer token
     """
-    response = post_api('/api/logout', token=sample_logged_user_account_token.key)
+    response = post_api("/api/logout", token=sample_logged_user_account_token.key)
     data = response.json()
-    assert data['developer_message'] == 'Logout successful'
+    assert data["developer_message"] == "Logout successful"
 
 
 def test_simple_get_user_info(sample_logged_user_account_token):
     """
     This function tests if a user can successfully log out of their account.
-    
+
     :param sample_logged_user_account_token: It is a token that represents a logged-in user account.
     This token is used to authenticate the user when making requests to the API. The token is passed in
     the HTTP Authorization header as a Bearer token
     """
-    response = get_api('/api/user', token=sample_logged_user_account_token.key)
+    response = get_api("/api/user", token=sample_logged_user_account_token.key)
     user = sample_logged_user_account_token.user
     data = response.json()
-    assert data['data']['username'] == user.username
-    assert data['data']['user_balance'] == user.balance
+    assert data["data"]["username"] == user.username
+    assert data["data"]["user_balance"] == user.balance
